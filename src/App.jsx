@@ -10,25 +10,27 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 
 const App = () => {
-    
   return (
     <ProductProvider>
       <Router>
-        <Header />
-        <CartModal />
-        
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/alta" element={<Alta />} />
-          <Route path="/contacto" element={<Contacto />} />
-        </Routes>
-        <Footer /> {/* Aquí */}
-        <Toast />
+        <div className="app-container">
+          <Header />
+          <CartModal />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/alta" element={<Alta />} />
+              <Route path="/contacto" element={<Contacto />} />
+            </Routes>
+            <Toast />
+          </main>
+          <Footer />
+        </div>
       </Router>
     </ProductProvider>
   );
 };
 
-
 export default App;
+
 
