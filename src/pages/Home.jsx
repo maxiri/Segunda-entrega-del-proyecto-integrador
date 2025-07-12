@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
 import { ProductContext } from '../context/ProductContext';
+import '../scss/pages/_home.scss';
 
 const Home = () => {
   const { products, addToCart } = useContext(ProductContext);
 
   return (
-    <div>
+    <div className="home-container">
       <h1>Lista de Productos</h1>
 
-
-      <div style={styles.grid}>
+      <div className="product-grid">
         {products.map((product) => (
-          <div key={product.id} style={styles.card}>
-            <img src={product.foto} alt={product.nombre} style={styles.img} />
+          <div key={product.id} className="product-card">
+            <img src={product.foto} alt={product.nombre} />
             <h3>{product.nombre}</h3>
             <p>{product.descripcionCorta}</p>
             <p><strong>${product.precio}</strong></p>
@@ -24,35 +24,4 @@ const Home = () => {
   );
 };
 
-const styles = {
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-    gap: '16px',
-    marginTop: '20px',
-  },
-  card: {
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    padding: '12px',
-    textAlign: 'center',
-  },
-  img: {
-    width: '100%',
-    height: '150px',
-    objectFit: 'cover',
-  },
-  toast: {
-    position: 'fixed',
-    top: '20px',
-    right: '20px',
-    background: 'green',
-    color: '#fff',
-    padding: '10px 20px',
-    borderRadius: '8px',
-    zIndex: 999,
-  },
-};
-
 export default Home;
-

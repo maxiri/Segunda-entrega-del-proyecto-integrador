@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { ProductContext } from '../context/ProductContext';
-
+import '../scss/pages/_alta.scss'; 
 const initialForm = {
   id: '',
   nombre: '',
@@ -17,12 +17,7 @@ const initialForm = {
 };
 
 const Alta = () => {
-  const {
-    products,
-    setProducts,
-    deleteProduct,
-    updateProduct
-  } = useContext(ProductContext);
+  const { products, setProducts, deleteProduct, updateProduct } = useContext(ProductContext);
 
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
@@ -82,7 +77,6 @@ const Alta = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar todos los campos
     const newErrors = {};
     Object.entries(form).forEach(([key, val]) => {
       const error = validateField(key, val);
@@ -91,7 +85,6 @@ const Alta = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Construir objeto para enviar al backend
       const productData = {
         nombre: form.nombre,
         precio: Number(form.precio),
@@ -108,7 +101,6 @@ const Alta = () => {
 
       try {
         if (isEditing) {
-          // Actualizar producto existente
           const res = await fetch(`https://686ee02191e85fac429f37e2.mockapi.io/Productos/${form.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -119,7 +111,6 @@ const Alta = () => {
           updateProduct(updatedProduct);
           alert('Producto actualizado con éxito');
         } else {
-          // Crear nuevo producto
           const res = await fetch('https://686ee02191e85fac429f37e2.mockapi.io/Productos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -142,82 +133,58 @@ const Alta = () => {
   };
 
   return (
-    <div>
+    <div className="alta-container">
       <h1>{isEditing ? 'Editar Producto' : 'Alta de Producto'}</h1>
 
-      <form onSubmit={handleSubmit} noValidate>
-        <label>
-          Nombre:
-          <input name="nombre" value={form.nombre} onChange={handleChange} onBlur={handleBlur} />
-          {errors.nombre && <span style={{color:'red'}}>{errors.nombre}</span>}
-        </label>
-
-        <label>
-          Precio:
-          <input name="precio" type="number" value={form.precio} onChange={handleChange} onBlur={handleBlur} />
-          {errors.precio && <span style={{color:'red'}}>{errors.precio}</span>}
-        </label>
-
-        <label>
-          Stock:
-          <input name="stock" type="number" value={form.stock} onChange={handleChange} onBlur={handleBlur} />
-          {errors.stock && <span style={{color:'red'}}>{errors.stock}</span>}
-        </label>
-
-        <label>
-          Marca:
-          <input name="marca" value={form.marca} onChange={handleChange} onBlur={handleBlur} />
-          {errors.marca && <span style={{color:'red'}}>{errors.marca}</span>}
-        </label>
-
-        <label>
-          Categoría:
-          <input name="categoria" value={form.categoria} onChange={handleChange} onBlur={handleBlur} />
-          {errors.categoria && <span style={{color:'red'}}>{errors.categoria}</span>}
-        </label>
-
-        <label>
-          Descripción corta:
-          <input name="descripcionCorta" value={form.descripcionCorta} onChange={handleChange} />
-        </label>
-
-        <label>
-          Descripción larga:
-          <textarea name="descripcionLarga" value={form.descripcionLarga} onChange={handleChange} />
-        </label>
+      <form onSubmit={handleSubmit} noValidate className="alta-form">
+        {[
+          { label: 'Nombre', name: 'nombre' },
+          { label: 'Precio', name: 'precio', type: 'number' },
+          { label: 'Stock', name: 'stock', type: 'number' },
+          { label: 'Marca', name: 'marca' },
+          { label: 'Categoría', name: 'categoria' },
+          { label: 'Descripción corta', name: 'descripcionCorta' },
+          { label: 'Descripción larga', name: 'descripcionLarga', isTextArea: true },
+          { label: 'Edad desde', name: 'edadDesde', type: 'number' },
+          { label: 'Edad hasta', name: 'edadHasta', type: 'number' },
+          { label: 'Foto (URL)', name: 'foto' },
+        ].map(({ label, name, type = 'text', isTextArea }) => (
+          <label key={name}>
+            {label}:
+            {isTextArea ? (
+              <textarea name={name} value={form[name]} onChange={handleChange} onBlur={handleBlur} />
+            ) : (
+              <input
+                name={name}
+                type={type}
+                value={form[name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            )}
+            {errors[name] && <span className="error">{errors[name]}</span>}
+          </label>
+        ))}
 
         <label>
           Envío gratis:
-          <input name="envioGratis" type="checkbox" checked={form.envioGratis} onChange={handleChange} />
-        </label>
-
-        <label>
-          Edad desde:
-          <input name="edadDesde" type="number" value={form.edadDesde} onChange={handleChange} onBlur={handleBlur} />
-          {errors.edadDesde && <span style={{color:'red'}}>{errors.edadDesde}</span>}
-        </label>
-
-        <label>
-          Edad hasta:
-          <input name="edadHasta" type="number" value={form.edadHasta} onChange={handleChange} onBlur={handleBlur} />
-          {errors.edadHasta && <span style={{color:'red'}}>{errors.edadHasta}</span>}
-        </label>
-
-        <label>
-          Foto (URL):
-          <input name="foto" value={form.foto} onChange={handleChange} onBlur={handleBlur} />
-          {errors.foto && <span style={{color:'red'}}>{errors.foto}</span>}
+          <input
+            name="envioGratis"
+            type="checkbox"
+            checked={form.envioGratis}
+            onChange={handleChange}
+          />
         </label>
 
         <button type="submit">{isEditing ? 'Actualizar Producto' : 'Agregar Producto'}</button>
       </form>
 
       <h2>Productos actuales</h2>
-      <ul>
+      <ul className="product-list">
         {products.map(prod => (
           <li key={prod.id}>
-            <strong>{prod.nombre}</strong> - ${prod.precio} &nbsp;
-            <button onClick={() => handleEdit(prod)}>Editar</button> &nbsp;
+            <strong>{prod.nombre}</strong> - ${prod.precio}
+            <button onClick={() => handleEdit(prod)}>Editar</button>
             <button onClick={() => deleteProduct(prod.id)}>Eliminar</button>
           </li>
         ))}

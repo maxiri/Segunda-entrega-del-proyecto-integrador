@@ -8,14 +8,11 @@ export const ProductProvider = ({ children }) => {
     const storedCart = localStorage.getItem('cart');
     return storedCart ? JSON.parse(storedCart) : [];
   });
-
   const [toastMessage, setToastMessage] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Ref para controlar el timeout y evitar múltiples toasts
   const toastTimeoutRef = useRef(null);
 
-  // Traer productos desde mockapi
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -29,21 +26,33 @@ export const ProductProvider = ({ children }) => {
     fetchProducts();
   }, []);
 
-  // Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product) => {
+    let message = '';
+
     setCart((prevCart) => {
       const existing = prevCart.find((item) => item.id === product.id);
+
       if (existing) {
+        if (existing.quantity + 1 > product.stock) {
+          message = `No hay suficiente stock de ${product.nombre}`;
+          return prevCart;
+        }
+        message = `${product.nombre} agregado al carrito`;
         return prevCart.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
+        if (product.stock < 1) {
+          message = `No hay stock disponible de ${product.nombre}`;
+          return prevCart;
+        }
+        message = `${product.nombre} agregado al carrito`;
         return [...prevCart, { ...product, quantity: 1 }];
       }
     });
@@ -53,8 +62,8 @@ export const ProductProvider = ({ children }) => {
       clearTimeout(toastTimeoutRef.current);
     }
 
-    // Mostrar nuevo mensaje
-    setToastMessage(`${product.nombre} agregado al carrito`);
+    // Mostrar mensaje
+    setToastMessage(message);
 
     // Configurar timeout para ocultar
     toastTimeoutRef.current = setTimeout(() => {
@@ -85,6 +94,12 @@ export const ProductProvider = ({ children }) => {
     setIsCartOpen(!isCartOpen);
   };
 
+  const finalizePurchase = () => {
+    setCart([]);
+    setToastMessage('¡Gracias por tu compra!');
+    setIsCartOpen(false);
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -99,6 +114,7 @@ export const ProductProvider = ({ children }) => {
         toggleCart,
         toastMessage,
         setToastMessage,
+        finalizePurchase,
       }}
     >
       {children}

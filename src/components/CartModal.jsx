@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { ProductContext } from '../context/ProductContext';
 
 const CartModal = () => {
-  const { cart, setCart, isCartOpen, toggleCart } = useContext(ProductContext);
+  const { cart, setCart, isCartOpen, toggleCart, finalizePurchase } = useContext(ProductContext);
+   
 
   // Cerrar con ESC
   useEffect(() => {
@@ -20,6 +21,7 @@ const CartModal = () => {
       )
     );
   };
+
 
   const subtractQuantity = (id) => {
     setCart((prev) =>
@@ -88,6 +90,9 @@ const CartModal = () => {
             <button onClick={clearCart} style={{ marginTop: '10px' }}>
               Vaciar carrito
             </button>
+             <button onClick={finalizePurchase} style={{ marginTop: '10px' }}>
+              Finalizar compra 🛒
+             </button>
           </>
         )}
       </div>

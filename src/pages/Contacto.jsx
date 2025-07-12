@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../scss/pages/_contacto.scss';
 
 const initialForm = {
   nombre: '',
@@ -30,7 +31,6 @@ const Contacto = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Aquí podrías enviar a una API real
       console.log('Mensaje enviado:', form);
       setEnviado(true);
       setForm(initialForm);
@@ -39,7 +39,7 @@ const Contacto = () => {
   };
 
   return (
-    <div>
+    <div className="contacto-container">
       <h1>Contacto</h1>
       <form onSubmit={handleSubmit} noValidate>
         <label>
@@ -48,8 +48,9 @@ const Contacto = () => {
             name="nombre"
             value={form.nombre}
             onChange={handleChange}
+            className={errors.nombre ? 'error' : ''}
           />
-          {errors.nombre && <span style={{ color: 'red' }}>{errors.nombre}</span>}
+          {errors.nombre && <span className="error-text">{errors.nombre}</span>}
         </label>
 
         <label>
@@ -58,8 +59,9 @@ const Contacto = () => {
             name="email"
             value={form.email}
             onChange={handleChange}
+            className={errors.email ? 'error' : ''}
           />
-          {errors.email && <span style={{ color: 'red' }}>{errors.email}</span>}
+          {errors.email && <span className="error-text">{errors.email}</span>}
         </label>
 
         <label>
@@ -68,14 +70,15 @@ const Contacto = () => {
             name="mensaje"
             value={form.mensaje}
             onChange={handleChange}
+            className={errors.mensaje ? 'error' : ''}
           />
-          {errors.mensaje && <span style={{ color: 'red' }}>{errors.mensaje}</span>}
+          {errors.mensaje && <span className="error-text">{errors.mensaje}</span>}
         </label>
 
         <button type="submit">Enviar</button>
       </form>
 
-      {enviado && <p style={{ color: 'green' }}>Mensaje enviado con éxito ✅</p>}
+      {enviado && <p className="success-message">Mensaje enviado con éxito ✅</p>}
     </div>
   );
 };
