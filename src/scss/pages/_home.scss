@@ -1,5 +1,5 @@
 .home-container {
-  padding: 20px;
+  
 
   h1 {
     text-align: center;
@@ -55,6 +55,154 @@
       &:hover {
         background-color: #036a60;
       }
+    }
+  }
+}
+.home {
+  padding: 20px;
+
+  &__title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  &__card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0 10px rgba(4, 139, 123, 0.6);
+    }
+  }
+
+  &__card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  &__card-title {
+    margin: 10px 0 5px;
+  }
+
+  &__card-description {
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  &__card-price {
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  // ... estilos previos ...
+
+  &__search {
+    margin-bottom: 20px;
+    text-align: center;
+
+    &-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #048b7b;
+        box-shadow: 0 0 5px rgba(4, 139, 123, 0.5);
+      }
+    }
+  }
+}
+
+
+.home-container {
+  
+  position: relative;
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    background: #048b7b;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+
+    .page-title {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .sort-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        font-weight: 600;
+      }
+
+      select {
+        padding: 6px 12px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .product-grid {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0 10px rgba(4, 139, 123, 0.5);
+    }
+
+    img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin: 10px 0 5px;
+    }
+
+    p {
+      margin: 5px 0;
     }
   }
 }

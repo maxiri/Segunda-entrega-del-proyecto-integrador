@@ -1,14 +1,15 @@
-@import 'abstracts/variables';
-@import 'base/reset';
-@import 'base/global';
-@import 'components/buttons';
-@import 'components/cards';
-@import 'components/modal';
-@import 'components/header';
-@import 'components/form';
-@import 'components/toast';
-@import 'pages/home';
-@import 'pages/alta';
+@use 'abstracts/variables' as v;
+@use 'base/reset';
+@use 'base/global';
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/modal';
+@use 'components/header';
+@use 'components/form';
+@use 'components/toast';
+@use 'pages/home';
+@use 'pages/alta';
+;
 
 html, body {
   height: 100%;
@@ -24,7 +25,7 @@ html, body {
 
 .main-content {
   flex: 1;
-  padding: 20px;
+  
 }
 
 footer {

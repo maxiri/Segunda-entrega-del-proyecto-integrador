@@ -3,7 +3,11 @@ import React, { useContext } from 'react';
 import { ProductContext } from '../context/ProductContext';
 
 const Header = () => {
-  const { toggleCart, cart } = useContext(ProductContext);
+  const { toggleCart, cart, searchTerm, setSearchTerm } = useContext(ProductContext);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // ✅ Usar el setter global
+  };
 
   return (
     <header style={styles.header}>
@@ -15,6 +19,15 @@ const Header = () => {
         <Link to="/" style={styles.link}>Home</Link>
         <Link to="/alta" style={styles.link}>Alta</Link>
         <Link to="/contacto" style={styles.link}>Contacto</Link>
+
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          style={styles.searchInput}
+        />
+
         <button type="button" onClick={toggleCart} style={styles.cartButton}>
           🛒 ({cart.reduce((acc, item) => acc + item.quantity, 0)})
         </button>
@@ -31,18 +44,26 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   title: {
     margin: 0,
   },
   nav: {
     display: 'flex',
-    gap: '16px',
+    gap: '12px',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   link: {
     color: '#fff',
     textDecoration: 'none',
+  },
+  searchInput: {
+    padding: '5px 10px',
+    borderRadius: '5px',
+    border: 'none',
+    outline: 'none',
   },
   cartButton: {
     background: 'transparent',

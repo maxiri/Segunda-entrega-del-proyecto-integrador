@@ -10,6 +10,7 @@ export const ProductProvider = ({ children }) => {
   });
   const [toastMessage, setToastMessage] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(''); // ✅ Nuevo
 
   const toastTimeoutRef = useRef(null);
 
@@ -57,15 +58,12 @@ export const ProductProvider = ({ children }) => {
       }
     });
 
-    // Limpiar timeout anterior si existe
     if (toastTimeoutRef.current) {
       clearTimeout(toastTimeoutRef.current);
     }
 
-    // Mostrar mensaje
     setToastMessage(message);
 
-    // Configurar timeout para ocultar
     toastTimeoutRef.current = setTimeout(() => {
       setToastMessage('');
       toastTimeoutRef.current = null;
@@ -115,6 +113,8 @@ export const ProductProvider = ({ children }) => {
         toastMessage,
         setToastMessage,
         finalizePurchase,
+        searchTerm,        // ✅ Nuevo
+        setSearchTerm,     // ✅ Nuevo
       }}
     >
       {children}

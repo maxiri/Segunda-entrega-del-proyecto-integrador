@@ -1,0 +1,12 @@
+@use '../abstracts/variables' as v;
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: v.$accent-color;
+  color: white;
+  padding: 10px 20px;
+  border-radius: v.$border-radius;
+  box-shadow: v.$box-shadow;
+  z-index: 9999;
+}

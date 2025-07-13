@@ -1,8 +1,10 @@
+@use '../abstracts/variables' as v;
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: $text-color;
-  background-color: $gray-light;
+  color: v.$text-color;
+  font-family: v.$font-family;
 }
+
 
 a {
   text-decoration: none;

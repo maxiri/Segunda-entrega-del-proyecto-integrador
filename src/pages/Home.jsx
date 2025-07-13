@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import ProductModal from '../components/ProductModal';
 import '../scss/pages/_home.scss';
@@ -6,11 +6,57 @@ import '../scss/pages/_home.scss';
 const Home = () => {
   const { products, addToCart } = useContext(ProductContext);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [sortOption, setSortOption] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
 
-  const handleCardClick = (product) => {
-    setSelectedProduct(product);
-  };
+  // Obtener categorías únicas para el filtro
+  const categories = useMemo(() => {
+    const cats = products.map((p) => p.categoria).filter(Boolean);
+    return [...new Set(cats)].sort();
+  }, [products]);
 
+  // Filtrar productos por texto y categoría
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchCategory =
+        categoryFilter === '' || product.categoria === categoryFilter;
+      const matchText = product.nombre
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+      return matchCategory && matchText;
+    });
+  }, [products, categoryFilter, searchText]);
+
+  // Ordenar productos filtrados
+  const sortedProducts = useMemo(() => {
+    let sorted = [...filteredProducts];
+    switch (sortOption) {
+      case 'price-asc':
+        sorted.sort((a, b) => a.precio - b.precio);
+        break;
+      case 'price-desc':
+        sorted.sort((a, b) => b.precio - a.precio);
+        break;
+      case 'name-asc':
+        sorted.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        break;
+      case 'name-desc':
+        sorted.sort((a, b) => b.nombre.localeCompare(a.nombre));
+        break;
+      case 'stock-asc':
+        sorted.sort((a, b) => a.stock - b.stock);
+        break;
+      case 'stock-desc':
+        sorted.sort((a, b) => b.stock - a.stock);
+        break;
+      default:
+        break;
+    }
+    return sorted;
+  }, [filteredProducts, sortOption]);
+
+  const handleCardClick = (product) => setSelectedProduct(product);
   const handleAddToCartAndClose = () => {
     addToCart(selectedProduct);
     setSelectedProduct(null);
@@ -18,21 +64,68 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1>Lista de Productos</h1>
+      {/* Toolbar fija con búsqueda, filtro y orden */}
+      <div className="toolbar">
+        <h1 className="page-title">Lista de Productos</h1>
 
-      <div className="product-grid">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="product-card"
-            onClick={() => handleCardClick(product)}
+        <div className="filters">
+          <input
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="input-search"
+          />
+
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="select-category"
           >
-            <img src={product.foto} alt={product.nombre} />
-            <h3>{product.nombre}</h3>
-            <p>{product.descripcionCorta}</p>
-            <p><strong>${product.precio}</strong></p>
-          </div>
-        ))}
+            <option value="">Todas las categorías</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="select-sort"
+          >
+            <option value="">Ordenar por</option>
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="name-asc">Nombre: A-Z</option>
+            <option value="name-desc">Nombre: Z-A</option>
+            <option value="stock-asc">Stock: menor a mayor</option>
+            <option value="stock-desc">Stock: mayor a menor</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Grilla de productos */}
+      <div className="product-grid">
+        {sortedProducts.length === 0 ? (
+          <p>No se encontraron productos que coincidan.</p>
+        ) : (
+          sortedProducts.map((product) => (
+            <div
+              key={product.id}
+              className="product-card"
+              onClick={() => handleCardClick(product)}
+            >
+              <img src={product.foto} alt={product.nombre} />
+              <h3>{product.nombre}</h3>
+              <p>{product.descripcionCorta}</p>
+              <p>
+                <strong>${product.precio}</strong>
+              </p>
+            </div>
+          ))
+        )}
       </div>
 
       {selectedProduct && (
@@ -43,6 +136,7 @@ const Home = () => {
         />
       )}
     </div>
+    
   );
 };
 
