@@ -6,7 +6,7 @@ const Header = () => {
   const { toggleCart, cart, searchTerm, setSearchTerm } = useContext(ProductContext);
 
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value); // ✅ Usar el setter global
+    setSearchTerm(e.target.value); 
   };
 
   return (
@@ -20,13 +20,6 @@ const Header = () => {
         <Link to="/alta" style={styles.link}>Alta</Link>
         <Link to="/contacto" style={styles.link}>Contacto</Link>
 
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          style={styles.searchInput}
-        />
 
         <button type="button" onClick={toggleCart} style={styles.cartButton}>
           🛒 ({cart.reduce((acc, item) => acc + item.quantity, 0)})
