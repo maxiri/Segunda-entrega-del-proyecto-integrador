@@ -2,7 +2,7 @@ import React from 'react';
 import '../scss/components/_productModal.scss';
 
 const ProductModal = ({ product, onClose, onAddToCart }) => {
-  if (!product) return null; // Evita errores si no hay producto
+  if (!product) return null; 
 
   return (
     <div

@@ -1,123 +1,168 @@
+@use '../abstracts/variables' as v;
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: v.$z-index-modal;
 }
 
 .cart-modal {
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-height: 80vh;
+  padding: v.$spacing-lg;
+  border-radius: v.$border-radius;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: v.$box-shadow;
   overflow-y: auto;
-  width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  animation: fadeIn 0.3s ease-out;
 
   h2 {
+    margin-top: 0;
+    color: v.$primary-color;
     text-align: center;
-    color: #048b7b;
-  }
-
-  hr {
-    margin: 15px 0;
   }
 
   h3 {
+    margin-top: v.$spacing-md;
     text-align: right;
-    margin-top: 10px;
+    color: v.$secondary-color;
   }
 
   .close-btn {
     background: transparent;
     border: none;
-    font-size: 1.2rem;
+    color: v.$gray-dark;
+    font-size: 20px;
+    position: absolute;
+    top: v.$spacing-md;
+    right: v.$spacing-md;
     cursor: pointer;
-    float: right;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: rotate(90deg);
+      color: v.$primary-color;
+    }
   }
 
   .cart-item {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    gap: v.$spacing-md;
+    border-bottom: 1px solid v.$gray-light;
+    padding: v.$spacing-sm 0;
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
-      border-radius: 6px;
+      border-radius: v.$border-radius;
     }
 
     div {
       flex: 1;
 
       h4 {
-        margin: 0;
-        font-size: 1rem;
+        margin: 0 0 v.$spacing-xs 0;
       }
 
       p {
-        margin: 3px 0;
-        font-size: 0.9rem;
+        margin: 2px 0;
+        font-size: 14px;
+        color: v.$gray-dark;
       }
 
-      button {
-        margin-right: 5px;
-        padding: 4px 8px;
-        border: none;
-        background: #048b7b;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        margin-top: v.$spacing-xs;
 
-        &:hover {
-          background: #036a60;
+        button {
+          background-color: v.$primary-color;
+          color: white;
+          border: none;
+          padding: 4px 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: darken(v.$primary-color, 10%);
+          }
+        }
+
+        input {
+          width: 50px;
+          text-align: center;
+          margin: 0 v.$spacing-xs;
+          padding: 4px;
+          border: 1px solid v.$gray-light;
+          border-radius: 4px;
         }
       }
 
       .delete-btn {
-        background: red;
+        margin-top: v.$spacing-xs;
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
 
         &:hover {
-          background: darkred;
+          background-color: darken(red, 10%);
         }
       }
     }
   }
 
-  .clear-btn, .buy-btn {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .clear-btn {
-    background: #888;
-
-    &:hover {
-      background: #555;
-    }
-  }
-
+  .clear-btn,
   .buy-btn {
-    background: #048b7b;
+    margin-top: v.$spacing-sm;
+    width: 100%;
+    padding: v.$spacing-sm;
+    border: none;
+    border-radius: v.$border-radius;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 
-    &:hover {
-      background: #036a60;
+    &.clear-btn {
+      background-color: v.$gray-dark;
+      color: white;
+
+      &:hover {
+        background-color: darken(v.$gray-dark, 10%);
+      }
     }
+
+    &.buy-btn {
+      background-color: v.$primary-color;
+      color: white;
+
+      &:hover {
+        background-color: darken(v.$primary-color, 10%);
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

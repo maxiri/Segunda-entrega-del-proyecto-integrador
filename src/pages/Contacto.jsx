@@ -49,6 +49,8 @@ const Contacto = () => {
             value={form.nombre}
             onChange={handleChange}
             className={errors.nombre ? 'error' : ''}
+            title="Ingresa tu nombre completo"
+            autoComplete="name"
           />
           {errors.nombre && <span className="error-text">{errors.nombre}</span>}
         </label>
@@ -56,10 +58,13 @@ const Contacto = () => {
         <label>
           Email:
           <input
+            type="email"
             name="email"
             value={form.email}
             onChange={handleChange}
             className={errors.email ? 'error' : ''}
+            title="Ingresa tu correo electrónico para que podamos contactarte"
+            autoComplete="email"
           />
           {errors.email && <span className="error-text">{errors.email}</span>}
         </label>
@@ -71,6 +76,7 @@ const Contacto = () => {
             value={form.mensaje}
             onChange={handleChange}
             className={errors.mensaje ? 'error' : ''}
+            title="Contanos tu consulta o comentario"
           />
           {errors.mensaje && <span className="error-text">{errors.mensaje}</span>}
         </label>

@@ -10,7 +10,7 @@ export const ProductProvider = ({ children }) => {
   });
   const [toastMessage, setToastMessage] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(''); // ✅ Nuevo
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toastTimeoutRef = useRef(null);
 
@@ -97,6 +97,7 @@ export const ProductProvider = ({ children }) => {
     setToastMessage('¡Gracias por tu compra!');
     setIsCartOpen(false);
   };
+  
 
   return (
     <ProductContext.Provider

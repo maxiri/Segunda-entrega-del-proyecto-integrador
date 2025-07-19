@@ -12,7 +12,9 @@ const ProductCard = ({ product }) => {
       <button onClick={() => addToCart(product)}>Agregar al carrito 🛒</button>
     </div>
   );
+  
 };
+
 
 const styles = {
   card: {
@@ -27,6 +29,7 @@ const styles = {
     height: '150px',
     objectFit: 'cover'
   }
+  
 };
 
 export default ProductCard;

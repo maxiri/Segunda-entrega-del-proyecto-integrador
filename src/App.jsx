@@ -7,7 +7,8 @@ import Header from './components/Header';
 import CartModal from './components/CartModal';
 import { ProductProvider } from './context/ProductContext';
 import Footer from './components/Footer';
-import Toast from './components/Toast';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -22,9 +23,9 @@ const App = () => {
               <Route path="/alta" element={<Alta />} />
               <Route path="/contacto" element={<Contacto />} />
             </Routes>
-            <Toast />
           </main>
           <Footer />
+          <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
       </Router>
     </ProductProvider>
@@ -32,5 +33,3 @@ const App = () => {
 };
 
 export default App;
-
-

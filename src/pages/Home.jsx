@@ -10,25 +10,22 @@ const Home = () => {
   const [searchText, setSearchText] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
-  // Obtener categorías únicas para el filtro
+  // Obtener categorías únicas
   const categories = useMemo(() => {
     const cats = products.map((p) => p.categoria).filter(Boolean);
     return [...new Set(cats)].sort();
   }, [products]);
 
-  // Filtrar productos por texto y categoría
+  // Filtrar por texto y categoría
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      const matchCategory =
-        categoryFilter === '' || product.categoria === categoryFilter;
-      const matchText = product.nombre
-        .toLowerCase()
-        .includes(searchText.toLowerCase());
+      const matchCategory = categoryFilter === '' || product.categoria === categoryFilter;
+      const matchText = product.nombre.toLowerCase().includes(searchText.toLowerCase());
       return matchCategory && matchText;
     });
   }, [products, categoryFilter, searchText]);
 
-  // Ordenar productos filtrados
+  // Ordenar filtrados
   const sortedProducts = useMemo(() => {
     let sorted = [...filteredProducts];
     switch (sortOption) {
@@ -57,6 +54,7 @@ const Home = () => {
   }, [filteredProducts, sortOption]);
 
   const handleCardClick = (product) => setSelectedProduct(product);
+
   const handleAddToCartAndClose = () => {
     addToCart(selectedProduct);
     setSelectedProduct(null);
@@ -64,7 +62,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Toolbar fija con búsqueda, filtro y orden */}
       <div className="toolbar">
         <h1 className="page-title">Lista de Productos</h1>
 
@@ -75,12 +72,14 @@ const Home = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="input-search"
+            title="Buscar productos por nombre"
           />
 
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
             className="select-category"
+            title="Filtrar por categoría"
           >
             <option value="">Todas las categorías</option>
             {categories.map((cat) => (
@@ -94,6 +93,7 @@ const Home = () => {
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
             className="select-sort"
+            title="Ordenar productos"
           >
             <option value="">Ordenar por</option>
             <option value="price-asc">Precio: menor a mayor</option>
@@ -106,7 +106,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Grilla de productos */}
       <div className="product-grid">
         {sortedProducts.length === 0 ? (
           <p>No se encontraron productos que coincidan.</p>
@@ -116,13 +115,13 @@ const Home = () => {
               key={product.id}
               className="product-card"
               onClick={() => handleCardClick(product)}
+              title={`Ver detalles de ${product.nombre}`}
             >
               <img src={product.foto} alt={product.nombre} />
               <h3>{product.nombre}</h3>
               <p>{product.descripcionCorta}</p>
-              <p>
-                <strong>${product.precio}</strong>
-              </p>
+              <p><strong>${product.precio}</strong></p>
+              <p>Stock: {product.stock}</p>
             </div>
           ))
         )}
@@ -136,7 +135,6 @@ const Home = () => {
         />
       )}
     </div>
-    
   );
 };
 
