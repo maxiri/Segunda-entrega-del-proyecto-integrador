@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { ProductContext } from '../context/ProductContext';
-import '../scss/components/_cartmodal.scss';
+import '../scss/base/components/_cartmodal.scss';
 
 const CartModal = () => {
   const { cart, setCart, isCartOpen, toggleCart, finalizePurchase, setToastMessage } = useContext(ProductContext);

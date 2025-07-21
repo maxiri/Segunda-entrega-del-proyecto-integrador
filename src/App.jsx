@@ -7,6 +7,7 @@ import Header from './components/Header';
 import CartModal from './components/CartModal';
 import { ProductProvider } from './context/ProductContext';
 import Footer from './components/Footer';
+import Toast from './components/Toast'; // <-- Importa el Toast personalizado
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,6 +26,7 @@ const App = () => {
             </Routes>
           </main>
           <Footer />
+          <Toast /> {/* Aquí lo agregas */}
           <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
       </Router>

@@ -4,7 +4,6 @@ import '../scss/pages/_alta.scss';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Estado inicial
 const initialForm = {
   id: '',
   nombre: '',
@@ -28,13 +27,12 @@ const Alta = () => {
   });
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Guardar formulario en localStorage
   useEffect(() => {
     localStorage.setItem('formAlta', JSON.stringify(form));
   }, [form]);
 
-  // Validaciones
   const validateField = (name, value) => {
     switch (name) {
       case 'nombre':
@@ -97,6 +95,7 @@ const Alta = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setLoading(true);
       const productData = {
         nombre: form.nombre,
         precio: Number(form.precio),
@@ -133,7 +132,6 @@ const Alta = () => {
           setProducts([...products, savedProduct]);
           toast.success('Producto agregado con éxito');
         }
-
         setForm(initialForm);
         setErrors({});
         setIsEditing(false);
@@ -141,6 +139,8 @@ const Alta = () => {
       } catch (error) {
         toast.error(error.message);
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     } else {
       toast.error('Por favor corrige los errores antes de enviar');
@@ -167,7 +167,12 @@ const Alta = () => {
           <label key={name}>
             {label}:
             {isTextArea ? (
-              <textarea name={name} value={form[name]} onChange={handleChange} onBlur={handleBlur} />
+              <textarea
+                name={name}
+                value={form[name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             ) : (
               <input
                 name={name}
@@ -183,18 +188,17 @@ const Alta = () => {
         ))}
 
         <div className="switch-container">
-  <span className="switch-label">Envío gratis:</span>
-  <label className="switch">
-    <input
-      name="envioGratis"
-      type="checkbox"
-      checked={form.envioGratis}
-      onChange={handleChange}
-    />
-    <span className="slider"></span>
-  </label>
-</div>
-
+          <span className="switch-label">Envío gratis:</span>
+          <label className="switch">
+            <input
+              name="envioGratis"
+              type="checkbox"
+              checked={form.envioGratis}
+              onChange={handleChange}
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
 
         {form.foto && /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp)$/.test(form.foto) && (
           <div className="preview-image">
@@ -202,12 +206,14 @@ const Alta = () => {
           </div>
         )}
 
-        <button type="submit">{isEditing ? 'Actualizar Producto' : 'Agregar Producto'}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Enviando...' : isEditing ? 'Actualizar Producto' : 'Agregar Producto'}
+        </button>
       </form>
 
       <h2>Productos actuales</h2>
       <ul className="product-list">
-        {products.map(prod => (
+        {products.map((prod) => (
           <li key={prod.id}>
             <strong>{prod.nombre}</strong> - ${prod.precio}
             <button onClick={() => handleEdit(prod)} title="Editar producto">Editar</button>

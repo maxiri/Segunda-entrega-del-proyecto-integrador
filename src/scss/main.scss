@@ -1,12 +1,12 @@
 @use 'abstracts/variables' as v;
 @use 'base/reset';
 @use 'base/global';
-@use 'components/buttons';
-@use 'components/cards';
-@use 'components/modal';
-@use 'components/header';
-@use 'components/form';
-@use 'components/toast';
+@use 'base/components/buttons';
+@use 'base/components/cards';
+@use 'base/components/modal';
+@use 'base/components/header';
+@use 'base/components/form';
+@use 'base/components/toast';
 @use 'pages/home';
 @use 'pages/alta';
 ;

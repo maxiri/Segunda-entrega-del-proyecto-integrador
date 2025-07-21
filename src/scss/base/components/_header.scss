@@ -1,4 +1,5 @@
-@use '../abstracts/variables' as v;
+@use '../../abstracts/variables' as v;
+
 header {
   background-color: v.$primary-color;
   color: white;

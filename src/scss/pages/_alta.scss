@@ -243,5 +243,15 @@
     }
   }
 }
+.alta-form button[type="submit"] {
+  position: relative;
+}
+
+.alta-form button[type="submit"]:disabled {
+  background-color: #036a60;
+  cursor: wait;
+  transform: none;
+  opacity: 0.7;
+}
 
 }
