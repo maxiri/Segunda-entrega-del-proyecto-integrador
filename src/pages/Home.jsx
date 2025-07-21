@@ -16,11 +16,12 @@ const Home = () => {
     return [...new Set(cats)].sort();
   }, [products]);
 
-  // Filtrar por texto y categoría
+  // Filtrar por texto y categoría con protección ante valores undefined
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchCategory = categoryFilter === '' || product.categoria === categoryFilter;
-      const matchText = product.nombre.toLowerCase().includes(searchText.toLowerCase());
+      // Protección para evitar error si product.nombre es undefined
+      const matchText = product.nombre?.toLowerCase().includes(searchText.toLowerCase());
       return matchCategory && matchText;
     });
   }, [products, categoryFilter, searchText]);
@@ -117,7 +118,14 @@ const Home = () => {
               onClick={() => handleCardClick(product)}
               title={`Ver detalles de ${product.nombre}`}
             >
-              <img src={product.foto} alt={product.nombre} />
+              <img
+                src={product.foto || 'https://placehold.co/150x150?text=Sin+imagen'}
+                alt={product.nombre}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://placehold.co/150x150?text=Sin+imagen';
+                }}
+              />
               <h3>{product.nombre}</h3>
               <p>{product.descripcionCorta}</p>
               <p><strong>${product.precio}</strong></p>

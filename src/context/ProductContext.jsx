@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 
 export const ProductContext = createContext();
+export const useProductContext = () => React.useContext(ProductContext); // <-- ✅ Añadido
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
@@ -97,7 +98,6 @@ export const ProductProvider = ({ children }) => {
     setToastMessage('¡Gracias por tu compra!');
     setIsCartOpen(false);
   };
-  
 
   return (
     <ProductContext.Provider
@@ -114,8 +114,8 @@ export const ProductProvider = ({ children }) => {
         toastMessage,
         setToastMessage,
         finalizePurchase,
-        searchTerm,        // ✅ Nuevo
-        setSearchTerm,     // ✅ Nuevo
+        searchTerm,
+        setSearchTerm,
       }}
     >
       {children}
